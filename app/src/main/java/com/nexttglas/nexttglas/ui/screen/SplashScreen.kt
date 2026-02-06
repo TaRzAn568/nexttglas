@@ -25,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -67,10 +69,22 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
         onAnimationFinished()
     }
 
+    val gradientColors = listOf(
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+        MaterialTheme.colorScheme.background,
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = gradientColors,
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
     ) {
         Column(
             modifier = Modifier
