@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Nexttglas</string>
+    <!-- Web client ID from google-services.json for Google Sign-In -->
+
+    <string name="facebook_app_id">1694385455266790</string>
+    <string name="facebook_client_token">e0f773aa19d38c9a687666f9fdba66cb</string>
+
+</resources>
