@@ -10,10 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.facebook.CallbackManager
 import com.nexttglas.nexttglas.ui.screen.App
+import com.nexttglas.nexttglas.ui.screen.SplashScreen
 import com.nexttglas.nexttglas.ui.theme.NexttglasTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +30,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            App(fbCallbackManager)
+            var showSplash by remember { mutableStateOf(true) }
+
+            if (showSplash) {
+                SplashScreen(onAnimationFinished = { showSplash = false })
+            } else {
+                App(fbCallbackManager)
+            }
+           // App(fbCallbackManager)
         }
     }
 
