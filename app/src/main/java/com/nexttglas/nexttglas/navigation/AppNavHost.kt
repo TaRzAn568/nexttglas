@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.nexttglas.nexttglas.ui.screen.SplashScreen
 import com.nexttglas.nexttglas.ui.screen.auth.LoginScreen
 import com.nexttglas.nexttglas.ui.screen.HomeScreen
 import com.nexttglas.nexttglas.ui.screen.auth.MainScreen
@@ -21,7 +22,17 @@ fun AppNavHost(
     val navController = rememberNavController()
     val viewModel: AuthViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = Screen.Main.route) {
+    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                onAnimationFinished = {
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(Screen.Main.route) {
             MainScreen(
                 viewModel = viewModel,
