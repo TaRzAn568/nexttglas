@@ -13,6 +13,7 @@ import com.nexttglas.nexttglas.ui.screen.auth.RegistrationScreen
 import com.nexttglas.nexttglas.viewmodel.AuthViewModel
 import com.facebook.CallbackManager
 import com.nexttglas.nexttglas.data.AuthRepository
+import com.nexttglas.nexttglas.ui.screen.IntroScreen
 
 @Composable
 fun AppNavHost(
@@ -26,10 +27,18 @@ fun AppNavHost(
         composable(Screen.Splash.route) {
             SplashScreen(
                 onAnimationFinished = {
-                    navController.navigate(Screen.Main.route) {
+                    navController.navigate(Screen.IntroScreen.route) {
                         popUpTo(Screen.Splash.route) { inclusive = true }
                     }
                 }
+            )
+        }
+
+        composable(Screen.IntroScreen.route) {
+            IntroScreen (
+                onSignUpClick = { navController.navigate(Screen.Main.route) },
+                onLoginClick =  { navController.navigate(Screen.Main.route)}
+
             )
         }
 
