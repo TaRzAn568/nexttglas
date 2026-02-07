@@ -1,13 +1,19 @@
 package com.nexttglas.nexttglas.data
 
+import android.net.Uri
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ) : AuthRepository {
 
     fun currentUser() = firebaseAuth.currentUser
@@ -36,6 +42,65 @@ class AuthRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } catch (e: Exception) {
             return Result.failure(e)
+        }
+    }
+
+    override suspend fun signUpWithDetails(signUpData: SignUpData): Result<Unit> {
+        return try {
+            // Create user with email and password
+            val authResult = firebaseAuth
+                .createUserWithEmailAndPassword(signUpData.email, signUpData.password)
+                .await()
+
+            val user = authResult.user ?: return Result.failure(Exception("User creation failed"))
+
+            // Upload photo if provided
+            var photoUrl: String? = null
+            signUpData.photoUri?.let { uri ->
+                photoUrl = uploadProfilePhoto(user.uid, uri)
+            }
+
+            // Update user profile with display name and photo
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(signUpData.fullName)
+                .apply {
+                    photoUrl?.let { setPhotoUri(Uri.parse(it)) }
+                }
+                .build()
+
+            user.updateProfile(profileUpdates).await()
+
+            // Save additional user data to Firestore
+            val userData = hashMapOf(
+                "uid" to user.uid,
+                "email" to signUpData.email,
+                "fullName" to signUpData.fullName,
+                "country" to signUpData.country,
+                "gender" to signUpData.gender,
+                "photoUrl" to (photoUrl ?: ""),
+                "createdAt" to System.currentTimeMillis()
+            )
+
+            firestore.collection("users")
+                .document(user.uid)
+                .set(userData)
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    private suspend fun uploadProfilePhoto(userId: String, photoUri: Uri): String? {
+        return try {
+            val storageRef = storage.reference
+                .child("profile_photos/$userId/${System.currentTimeMillis()}.jpg")
+
+            storageRef.putFile(photoUri).await()
+            storageRef.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            null
         }
     }
 

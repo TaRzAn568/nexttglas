@@ -72,7 +72,14 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
 
+    // Firebase Firestore and Storage
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
     implementation("com.facebook.android:facebook-login:latest.release")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }

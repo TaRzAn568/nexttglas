@@ -1,6 +1,8 @@
 package com.nexttglas.nexttglas.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.nexttglas.nexttglas.data.AuthRepository
 import com.nexttglas.nexttglas.data.AuthRepositoryImpl
 import dagger.Module
@@ -21,7 +23,23 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository {
-        return AuthRepositoryImpl(firebaseAuth)
+    fun provideFirebaseFirestore(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage {
+        return FirebaseStorage.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore,
+        storage: FirebaseStorage
+    ): AuthRepository {
+        return AuthRepositoryImpl(firebaseAuth, firestore, storage)
     }
 }

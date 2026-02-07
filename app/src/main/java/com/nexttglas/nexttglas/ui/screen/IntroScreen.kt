@@ -3,9 +3,7 @@ package com.nexttglas.nexttglas.ui.screen
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
@@ -69,81 +67,83 @@ fun IntroScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = 24.dp)
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // 1. Illustration Section - Modern Learner and Tutor
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                        .padding(vertical = 16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.nextglasimage),
-                        contentDescription = "Learner and Tutor Connection",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // 2. Boxed Content Section
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Headline
-                    IntroCard {
-                        Text(
-                            text = "Nexttglas – The world’s first bid-to-learn marketplace",
-                            style = MaterialTheme.typography.headlineSmall.copy(
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.SemiBold
-                            ),
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    // Emphasis (Accent highlight)
-                    IntroCard(
-                        containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
-                        borderStroke = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f))
+                    // 1. Illustration Section - Modern Learner and Tutor
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "“Your Price, Your Tutor, Your Terms”",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.Bold
-                            ),
-                            textAlign = TextAlign.Center
+                        Image(
+                            painter = painterResource(id = R.drawable.nextglasimage),
+                            contentDescription = "Learner and Tutor Connection",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit
                         )
                     }
 
-                    // Body Text
-                    IntroCard {
-                        Text(
-                            text = "Post a request, watch the bids roll in, and learn with total price transparency.",
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.Normal
-                            ),
-                            textAlign = TextAlign.Center
-                        )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // 2. Boxed Content Section
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Headline
+                        IntroCard {
+                            Text(
+                                text = "Nexttglas – The world's first bid-to-learn marketplace",
+                                style = MaterialTheme.typography.headlineSmall.copy(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.SemiBold
+                                ),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        // Emphasis (Accent highlight)
+                        IntroCard(
+                            containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
+                            borderStroke = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f))
+                        ) {
+                            Text(
+                                text = "\"Your Price, Your Tutor, Your Terms\"",
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        // Body Text
+                        IntroCard {
+                            Text(
+                                text = "Post a request, watch the bids roll in, and learn with total price transparency.",
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.Normal
+                                ),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
-
-                Spacer(modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.height(32.dp))
 
                 // 3. Action Buttons Section
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 32.dp),
+                        .padding(bottom = 24.dp, top = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     OutlinedButton(

@@ -3,6 +3,7 @@ package com.nexttglas.nexttglas.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexttglas.nexttglas.data.AuthRepository
+import com.nexttglas.nexttglas.data.SignUpData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,18 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             val result = repo.signUp(email, password)
+
+            _authState.value = result.fold(
+                onSuccess = { AuthState.Success },
+                onFailure = { AuthState.Error(it.message ?: "Unknown error") }
+            )
+        }
+    }
+
+    fun signUpWithDetails(signUpData: SignUpData) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            val result = repo.signUpWithDetails(signUpData)
 
             _authState.value = result.fold(
                 onSuccess = { AuthState.Success },
