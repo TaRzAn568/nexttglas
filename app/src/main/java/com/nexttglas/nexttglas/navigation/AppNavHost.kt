@@ -37,8 +37,7 @@ fun AppNavHost(
         composable(Screen.IntroScreen.route) {
             IntroScreen (
                 onSignUpClick = { navController.navigate(Screen.Main.route) },
-                onLoginClick =  { navController.navigate(Screen.Main.route)}
-
+                onLoginClick =  { navController.navigate(Screen.Login.route)}
             )
         }
 
@@ -48,7 +47,11 @@ fun AppNavHost(
                 fbCallbackManager,
                 onLoginClicked = { navController.navigate(Screen.Login.route) },
                 onSignUpClicked = { navController.navigate(Screen.Signup.route) },
-                onLoginSuccess = { navController.navigate(Screen.Home.route) },
+                onLoginSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.IntroScreen.route) { inclusive = true }
+                    }
+                },
                 onLoginWithFaceBookClicked = { navController.navigate(Screen.LoginWithFaceBook.route) }
             )
         }
@@ -56,7 +59,13 @@ fun AppNavHost(
         composable(Screen.Login.route) {
             LoginScreen(
                 viewModel = viewModel,
-                onLoginSuccess = { navController.navigate(Screen.Home.route) })
+                fbCallbackManager = fbCallbackManager,
+                onLoginSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.IntroScreen.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(Screen.Signup.route) {
             RegistrationScreen(
