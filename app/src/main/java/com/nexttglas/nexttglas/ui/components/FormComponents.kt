@@ -1,10 +1,13 @@
 package com.nexttglas.nexttglas.ui.components
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -37,6 +40,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -179,6 +183,7 @@ fun PhotoPicker(
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
     var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
+    var shouldLaunchCamera by remember { mutableStateOf(false) }
 
     // Gallery launcher
     val photoPickerLauncher = rememberLauncherForActivityResult(
@@ -194,6 +199,29 @@ fun PhotoPicker(
         if (success) {
             onPhotoSelected(tempPhotoUri)
         }
+        shouldLaunchCamera = false
+    }
+
+    // Camera permission launcher
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            shouldLaunchCamera = true
+        }
+    }
+
+    // Launch camera after permission is granted
+    LaunchedEffect(shouldLaunchCamera) {
+        if (shouldLaunchCamera) {
+            val photoFile = createImageFile(context)
+            tempPhotoUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                photoFile
+            )
+            cameraLauncher.launch(tempPhotoUri!!)
+        }
     }
 
     // Show dialog when user wants to pick photo
@@ -206,13 +234,26 @@ fun PhotoPicker(
                     TextButton(
                         onClick = {
                             showDialog = false
-                            val photoFile = createImageFile(context)
-                            tempPhotoUri = FileProvider.getUriForFile(
-                                context,
-                                "${context.packageName}.provider",
-                                photoFile
-                            )
-                            cameraLauncher.launch(tempPhotoUri!!)
+                            // Check camera permission
+                            when (PackageManager.PERMISSION_GRANTED) {
+                                ContextCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.CAMERA
+                                ) -> {
+                                    // Permission already granted, launch camera
+                                    val photoFile = createImageFile(context)
+                                    tempPhotoUri = FileProvider.getUriForFile(
+                                        context,
+                                        "${context.packageName}.provider",
+                                        photoFile
+                                    )
+                                    cameraLauncher.launch(tempPhotoUri!!)
+                                }
+                                else -> {
+                                    // Request permission
+                                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                                }
+                            }
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {

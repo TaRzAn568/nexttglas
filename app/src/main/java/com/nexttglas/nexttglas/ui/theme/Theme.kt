@@ -14,30 +14,32 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = DeepTeal,
-    onPrimary = OnDeepTeal,
+    onPrimary = Color.White,
     secondary = WarmSand,
-    onSecondary = OnSecondary,
-    tertiary = AmberHaze,
-    onTertiary = OnTertiary,
-    background = DeepTeal, // Changed to DeepTeal
-    onBackground = OnDeepTeal,
-    surface = DeepTeal, // Changed to DeepTeal
-    onSurface = OnDeepTeal
+    onSecondary = DeepTeal,
+    tertiary = DeepTeal,
+    onTertiary = Color.White,
+    background = DeepTeal,
+    onBackground = WarmSand,
+    surface = DeepTeal,
+    onSurface = WarmSand,
+    surfaceVariant = DeepTeal,
+    onSurfaceVariant = WarmSand
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = DeepTeal,
-    onPrimary = OnDeepTeal,
-    secondary = SoftClay,
-    onSecondary = InkyBlack,
-    tertiary = AmberHaze,
-    onTertiary = InkyBlack,
-    background = DeepTeal, // Changed to DeepTeal
-    onBackground = OnDeepTeal,
-    surface = DeepTeal, // Changed to DeepTeal
-    onSurface = OnDeepTeal,
-    surfaceVariant = SoftClay,
-    onSurfaceVariant = InkyBlack
+    onPrimary = Color.White,
+    secondary = WarmSand,
+    onSecondary = DeepTeal,
+    tertiary = DeepTeal,
+    onTertiary = Color.White,
+    background = WarmSand,
+    onBackground = DeepTeal,
+    surface = Color.White,
+    onSurface = DeepTeal,
+    surfaceVariant = WarmSand,
+    onSurfaceVariant = DeepTeal
 )
 
 @Composable

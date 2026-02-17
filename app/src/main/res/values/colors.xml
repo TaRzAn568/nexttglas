@@ -8,8 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Brand Colors -->
+    <!-- 2-Color Design System -->
     <color name="deep_teal">#006D77</color>
     <color name="warm_sand">#EDF6F9</color>
-    <color name="inky_black">#001219</color>
 </resources>

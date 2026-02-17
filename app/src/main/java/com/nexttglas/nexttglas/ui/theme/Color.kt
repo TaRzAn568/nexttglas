@@ -2,33 +2,22 @@ package com.nexttglas.nexttglas.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// 2-Color Design System
 // Primary: Deep Teal
 val DeepTeal = Color(0xFF006D77)
-val OnDeepTeal = Color(0xFFFFFFFF)
 
-// Secondary: Soft Clay / Warm Sand
+// Secondary: Warm Sand
 val WarmSand = Color(0xFFEDF6F9)
-val SoftClay = Color(0xFFFFDDD2)
 
-// Accent: Amber Haze / Tangerine Disco
-val AmberHaze = Color(0xFFFFB703)
-val TangerineDisco = Color(0xFFFB8500)
-
-// Tertiary: Deep Sapphire / Inky Black
-val InkyBlack = Color(0xFF001219)
-val DeepSapphire = Color(0xFF003049)
-
-// Material 3 Mappings
+// Material 3 Mappings - Using only Deep Teal and Warm Sand
 val Primary = DeepTeal
 val OnPrimary = Color.White
 val Secondary = WarmSand
-val OnSecondary = InkyBlack
-val Tertiary = AmberHaze
-val OnTertiary = InkyBlack
+val OnSecondary = DeepTeal
 
 val Background = WarmSand
-val OnBackground = InkyBlack
+val OnBackground = DeepTeal
 val Surface = Color.White
-val OnSurface = InkyBlack
-val SurfaceVariant = SoftClay
-val OnSurfaceVariant = InkyBlack
+val OnSurface = DeepTeal
+val SurfaceVariant = WarmSand
+val OnSurfaceVariant = DeepTeal

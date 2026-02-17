@@ -41,7 +41,8 @@ fun IntroScreen(
                             text = "Nexttglas",
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary // Deep Teal
+                                color = MaterialTheme.colorScheme.primary,
+                                letterSpacing = 0.5.sp
                             )
                         )
                     },

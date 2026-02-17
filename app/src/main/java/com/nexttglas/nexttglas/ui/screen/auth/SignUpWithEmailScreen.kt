@@ -30,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -55,7 +56,9 @@ fun RegistrationScreen(
 
     //  React to state changes
     LaunchedEffect(authState) {
+        Log.d("RegistrationScreen", "AuthState changed: $authState")
         if (authState is AuthState.Success) {
+            Log.d("RegistrationScreen", "Signup successful, navigating...")
             onSignupSuccess()
             viewModel.resetState()
         }
@@ -90,6 +93,24 @@ fun RegistrationScreen(
                     text = "Sign up to get started",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                // Debug: Show current auth state
+                Text(
+                    text = "Status: ${when(authState) {
+                        is AuthState.Idle -> "Ready"
+                        is AuthState.Loading -> "Creating account..."
+                        is AuthState.Success -> "Success!"
+                        is AuthState.Error -> "Error"
+                    }}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = when(authState) {
+                        is AuthState.Loading -> MaterialTheme.colorScheme.primary
+                        is AuthState.Success -> MaterialTheme.colorScheme.tertiary
+                        is AuthState.Error -> MaterialTheme.colorScheme.error
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    modifier = Modifier.padding(top = 4.dp)
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -180,11 +201,43 @@ fun RegistrationScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                if (password.value.isNotEmpty() && password.value.length < 6) {
+                    Text(
+                        text = "Password must be at least 6 characters",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Debug: Show button status
+                val isButtonEnabled = authState !is AuthState.Loading &&
+                        email.value.isNotEmpty() &&
+                        password.value.isNotEmpty() &&
+                        password.value.length >= 6 &&
+                        password.value == confirmPassword.value
+
+                if (!isButtonEnabled) {
+                    Text(
+                        text = "Fill all fields correctly to enable signup",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
                     onClick = {
-                        if (password.value == confirmPassword.value) {
+                        Log.d("RegistrationScreen", "Sign up button clicked")
+                        Log.d("RegistrationScreen", "Email: ${email.value}, Password length: ${password.value.length}")
+                        if (password.value.length < 6) {
+                            Log.d("RegistrationScreen", "Password too short")
+                        } else {
+                            Log.d("RegistrationScreen", "Calling viewModel.signup()")
                             viewModel.signup(email.value, password.value)
                         }
                     },
@@ -193,10 +246,7 @@ fun RegistrationScreen(
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp),
-                    enabled = authState !is AuthState.Loading &&
-                            email.value.isNotEmpty() &&
-                            password.value.isNotEmpty() &&
-                            password.value == confirmPassword.value
+                    enabled = isButtonEnabled
                 ) {
                     if (authState is AuthState.Loading) {
                         CircularProgressIndicator(

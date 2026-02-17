@@ -101,17 +101,14 @@ fun MainScreen(
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Nexttglas",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    letterSpacing = 0.5.sp
-                                )
+                        Text(
+                            text = "Nexttglas",
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                letterSpacing = 0.5.sp
                             )
-                        }
+                        )
                     },
                     navigationIcon = {
                         IconButton(onClick = { /* Handle menu */ }) {

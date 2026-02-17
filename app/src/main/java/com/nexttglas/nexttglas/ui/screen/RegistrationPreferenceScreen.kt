@@ -56,7 +56,8 @@ fun RegistrationPreferenceScreen(
                         "Nexttglas",
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
-                            color = primaryColor
+                            color = primaryColor,
+                            letterSpacing = 0.5.sp
                         )
                     )
                 },
