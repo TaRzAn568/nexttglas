@@ -1,4 +1,3 @@
-
 package com.nexttglas.nexttglas.ui.screen
 
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -97,7 +96,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
             Spacer(modifier = Modifier.weight(0.8f))
 
             Image(
-                painter = painterResource(id = R.drawable.nextglas_circular_logo),
+                painter = painterResource(id = R.drawable.nextglass_logo_ng_colorfull),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(180.dp)

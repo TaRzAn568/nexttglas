@@ -7,13 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nexttglas.nexttglas.ui.screen.SplashScreen
 import com.nexttglas.nexttglas.ui.screen.auth.LoginScreen
-import com.nexttglas.nexttglas.ui.screen.HomeScreen
 import com.nexttglas.nexttglas.ui.screen.auth.MainScreen
 import com.nexttglas.nexttglas.ui.screen.auth.RegistrationScreen
 import com.nexttglas.nexttglas.viewmodel.AuthViewModel
 import com.facebook.CallbackManager
 import com.nexttglas.nexttglas.data.AuthRepository
 import com.nexttglas.nexttglas.ui.screen.IntroScreen
+import com.nexttglas.nexttglas.ui.screen.RegistrationPreferenceScreen
 
 @Composable
 fun AppNavHost(
@@ -70,17 +70,15 @@ fun AppNavHost(
         composable(Screen.Signup.route) {
             RegistrationScreen(
                 viewModel = viewModel,
-                onSignupSuccess = { navController.navigate(Screen.Home.route) })
+                onSignupSuccess = { navController.navigate(Screen.RegistrationPreferenceScreen.route) })
         }
 
-        composable(Screen.Home.route) {
-            HomeScreen(
-                onLogout = {
-                    authRepository.logout()
-                    viewModel.resetState()
-                    navController.navigate(Screen.Main.route) {
-                        popUpTo(0) { inclusive = true }
-                    }
+        composable(Screen.RegistrationPreferenceScreen.route) {
+            RegistrationPreferenceScreen(
+                onBackClick = {
+                    /**
+                     * Todo
+                     */
                 }
             )
         }

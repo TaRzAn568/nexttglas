@@ -49,7 +49,7 @@ fun HomeScreen(onLogout: () -> Unit = {}) {
 
 
             Image(
-                painter = painterResource(R.drawable.nextglas_logo),
+                painter = painterResource(R.drawable.nextglass_logo_ng_colorfull),
                 contentDescription = "Confess It Logo",
                 modifier = Modifier
                     .fillMaxSize()

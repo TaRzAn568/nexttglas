@@ -10,4 +10,6 @@ sealed class Screen(val route: String) {
     object Home : Screen("Home")
     object LoginWithGoogle : Screen("GoogleLogin")
     object LoginWithFaceBook : Screen("FacebookLogin")
+
+    object RegistrationPreferenceScreen : Screen("RegistrationPreferenceScreen")
 }
