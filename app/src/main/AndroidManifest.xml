@@ -7,9 +7,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/nextglass_logo_ng_colorfull"
+        android:icon="@drawable/nexttglas_teal_no_bg"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/nextglass_logo_ng_colorfull"
+        android:roundIcon="@drawable/nexttglas_teal_no_bg"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nexttglas">
         <activity
