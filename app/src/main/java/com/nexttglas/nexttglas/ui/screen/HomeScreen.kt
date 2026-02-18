@@ -49,8 +49,8 @@ fun HomeScreen(onLogout: () -> Unit = {}) {
 
 
             Image(
-                painter = painterResource(R.drawable.nextglass_logo_ng_colorfull),
-                contentDescription = "Confess It Logo",
+                painter = painterResource(R.drawable.nexttglas_teal_no_bg),
+                contentDescription = "Nexttglas Logo",
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Transparent)

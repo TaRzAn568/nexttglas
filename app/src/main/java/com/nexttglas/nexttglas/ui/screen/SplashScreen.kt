@@ -96,7 +96,7 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
             Spacer(modifier = Modifier.weight(0.8f))
 
             Image(
-                painter = painterResource(id = R.drawable.nextglass_logo_ng_colorfull),
+                painter = painterResource(id = R.drawable.nexttglas_teal_no_bg),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(180.dp)
