@@ -37,7 +37,8 @@ fun AppNavHost(
         composable(Screen.IntroScreen.route) {
             IntroScreen (
                 onSignUpClick = { navController.navigate(Screen.Main.route) },
-                onLoginClick =  { navController.navigate(Screen.Login.route)}
+                onLoginClick =  { navController.navigate(Screen.Login.route)},
+                onRegisterClick = { navController.navigate(Screen.RegistrationPreferenceScreen.route) }
             )
         }
 
@@ -76,9 +77,7 @@ fun AppNavHost(
         composable(Screen.RegistrationPreferenceScreen.route) {
             RegistrationPreferenceScreen(
                 onBackClick = {
-                    /**
-                     * Todo
-                     */
+                    navController.popBackStack()
                 }
             )
         }
