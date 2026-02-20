@@ -12,6 +12,7 @@ import com.nexttglas.nexttglas.ui.screen.auth.RegistrationScreen
 import com.nexttglas.nexttglas.viewmodel.AuthViewModel
 import com.facebook.CallbackManager
 import com.nexttglas.nexttglas.data.AuthRepository
+import com.nexttglas.nexttglas.ui.screen.HomeScreen
 import com.nexttglas.nexttglas.ui.screen.IntroScreen
 import com.nexttglas.nexttglas.ui.screen.RegistrationPreferenceScreen
 
@@ -80,6 +81,10 @@ fun AppNavHost(
                     navController.popBackStack()
                 }
             )
+        }
+
+        composable(Screen.Home.route) {
+            HomeScreen {}
         }
     }
 
