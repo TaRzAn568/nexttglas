@@ -49,7 +49,7 @@ fun HomeScreen(onLogout: () -> Unit = {}) {
 
 
             Image(
-                painter = painterResource(R.drawable.nexttglas_teal_no_bg),
+                painter = painterResource(R.drawable.nexttglas_logo),
                 contentDescription = "Nexttglas Logo",
                 modifier = Modifier
                     .fillMaxSize()
