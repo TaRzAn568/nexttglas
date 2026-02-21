@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,8 +34,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(onAnimationFinished: () -> Unit) {
-    var logoAlpha by remember { mutableFloatStateOf(0f) }
-    var logoScale by remember { mutableFloatStateOf(0.5f) }
+    var logoAlpha by remember { mutableFloatStateOf(0.1f) }
     var bidAlpha by remember { mutableFloatStateOf(0f) }
     var bidScale by remember { mutableFloatStateOf(0.7f) }
     var learnAlpha by remember { mutableFloatStateOf(0f) }
@@ -45,25 +43,24 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
     var prosperScale by remember { mutableFloatStateOf(0.7f) }
 
     LaunchedEffect(key1 = true) {
-        // Animate logo
+        // Fade in logo over 3 seconds
         logoAlpha = 1f
-        logoScale = 1f
-        delay(800)
+        delay(3000)
 
         // Show Bid
         bidAlpha = 1f
         bidScale = 1f
-        delay(700)
+        delay(500)
 
         // Show Learn
         learnAlpha = 1f
         learnScale = 1f
-        delay(700)
+        delay(500)
 
         // Show Prosper
         prosperAlpha = 1f
         prosperScale = 1f
-        delay(1200)
+        delay(800)
 
         onAnimationFinished()
     }
@@ -92,25 +89,18 @@ fun SplashScreen(onAnimationFinished: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Logo with animation - positioned towards top
+            // Logo with fade animation - positioned towards top
             Spacer(modifier = Modifier.weight(0.8f))
 
             Image(
                 painter = painterResource(id = R.drawable.nexttglas_logo),
                 contentDescription = "Logo",
                 modifier = Modifier
-                    .size(180.dp)
-                    .scale(
-                        animateFloatAsState(
-                            targetValue = logoScale,
-                            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
-                            label = "logo_scale"
-                        ).value
-                    )
+                    .size(280.dp)
                     .alpha(
                         animateFloatAsState(
                             targetValue = logoAlpha,
-                            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
+                            animationSpec = tween(durationMillis = 3000, easing = FastOutSlowInEasing),
                             label = "logo_alpha"
                         ).value
                     )

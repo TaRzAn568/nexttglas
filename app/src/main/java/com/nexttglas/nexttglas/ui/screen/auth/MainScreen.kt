@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
@@ -50,6 +50,7 @@ import com.nexttglas.nexttglas.ui.components.FormTextField
 import com.nexttglas.nexttglas.ui.components.PhotoPicker
 import com.nexttglas.nexttglas.viewmodel.AuthState
 import com.nexttglas.nexttglas.viewmodel.AuthViewModel
+import com.nexttglas.nexttglas.viewmodel.LoginMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +60,8 @@ fun MainScreen(
     onLoginClicked: () -> Unit,
     onSignUpClicked: () -> Unit,
     onLoginSuccess: () -> Unit,
-    onLoginWithFaceBookClicked: () -> Unit
+    onLoginWithFaceBookClicked: () -> Unit,
+    onBackClick: () -> Unit = {}
 ) {
     val authState by viewModel.authState.collectAsState()
 
@@ -111,10 +113,10 @@ fun MainScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { /* Handle menu */ }) {
+                        IconButton(onClick = onBackClick) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -142,7 +144,8 @@ fun MainScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = authState !is AuthState.Loading
                 ) {
-                    Text(if (authState is AuthState.Loading) "Signing in..." else "Continue with Google")
+                    val isGoogleLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.GOOGLE
+                    Text(if (isGoogleLoading) "Signing in..." else "Continue with Google")
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -154,7 +157,8 @@ fun MainScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = authState !is AuthState.Loading
                 ) {
-                    Text(if (authState is AuthState.Loading) "Signing in..." else "Continue with Facebook")
+                    val isFacebookLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.FACEBOOK
+                    Text(if (isFacebookLoading) "Signing in..." else "Continue with Facebook")
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -167,7 +171,7 @@ fun MainScreen(
                 // Signup Form Section
                 Text(
                     text = "Create Account",
-                    style = MaterialTheme.typography.headlineSmall.copy(
+                    style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -296,8 +300,9 @@ fun MainScreen(
                         .height(56.dp),
                     enabled = authState !is AuthState.Loading
                 ) {
+                    val isEmailLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.EMAIL
                     Text(
-                        text = if (authState is AuthState.Loading) "Creating Account..." else "Sign Up",
+                        text = if (isEmailLoading) "Creating Account..." else "Sign Up",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

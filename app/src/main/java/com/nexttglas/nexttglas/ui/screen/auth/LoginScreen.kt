@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,13 +43,15 @@ import com.nexttglas.nexttglas.ui.components.DividerWithText
 import com.nexttglas.nexttglas.ui.components.FormTextField
 import com.nexttglas.nexttglas.viewmodel.AuthState
 import com.nexttglas.nexttglas.viewmodel.AuthViewModel
+import com.nexttglas.nexttglas.viewmodel.LoginMethod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel,
     fbCallbackManager: CallbackManager? = null,
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onBackClick: () -> Unit = {}
 ) {
     val authState by viewModel.authState.collectAsState()
 
@@ -97,10 +99,10 @@ fun LoginScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = { /* Handle menu */ }) {
+                        IconButton(onClick = onBackClick) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -128,7 +130,8 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = authState !is AuthState.Loading
                 ) {
-                    Text(if (authState is AuthState.Loading) "Signing in..." else "Continue with Google")
+                    val isGoogleLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.GOOGLE
+                    Text(if (isGoogleLoading) "Signing in..." else "Continue with Google")
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -141,7 +144,8 @@ fun LoginScreen(
                         modifier = Modifier.fillMaxWidth(),
                         enabled = authState !is AuthState.Loading
                     ) {
-                        Text(if (authState is AuthState.Loading) "Signing in..." else "Continue with Facebook")
+                        val isFacebookLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.FACEBOOK
+                        Text(if (isFacebookLoading) "Signing in..." else "Continue with Facebook")
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -155,7 +159,7 @@ fun LoginScreen(
                 // Login Form Section
                 Text(
                     text = "Login to Your Account",
-                    style = MaterialTheme.typography.headlineSmall.copy(
+                    style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -212,8 +216,9 @@ fun LoginScreen(
                         .height(56.dp),
                     enabled = authState !is AuthState.Loading
                 ) {
+                    val isEmailLoading = authState is AuthState.Loading && (authState as AuthState.Loading).method == LoginMethod.EMAIL
                     Text(
-                        text = if (authState is AuthState.Loading) "Logging in..." else "Login",
+                        text = if (isEmailLoading) "Logging in..." else "Login",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

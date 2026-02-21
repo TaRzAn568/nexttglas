@@ -1,5 +1,6 @@
 package com.nexttglas.nexttglas.di
 
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -8,6 +9,7 @@ import com.nexttglas.nexttglas.data.AuthRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -36,10 +38,11 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
+        @ApplicationContext context: Context,
         firebaseAuth: FirebaseAuth,
         firestore: FirebaseFirestore,
         storage: FirebaseStorage
     ): AuthRepository {
-        return AuthRepositoryImpl(firebaseAuth, firestore, storage)
+        return AuthRepositoryImpl(context, firebaseAuth, firestore, storage)
     }
 }

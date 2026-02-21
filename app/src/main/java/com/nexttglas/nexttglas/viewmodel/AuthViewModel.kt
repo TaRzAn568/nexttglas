@@ -20,7 +20,7 @@ class AuthViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
+            _authState.value = AuthState.Loading(LoginMethod.EMAIL)
             val result = repo.login(email, password)
 
             _authState.value = result.fold(
@@ -32,7 +32,7 @@ class AuthViewModel @Inject constructor(
 
     fun signup(email: String, password: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
+            _authState.value = AuthState.Loading(LoginMethod.EMAIL)
             val result = repo.signUp(email, password)
 
             _authState.value = result.fold(
@@ -44,7 +44,7 @@ class AuthViewModel @Inject constructor(
 
     fun signUpWithDetails(signUpData: SignUpData) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
+            _authState.value = AuthState.Loading(LoginMethod.EMAIL)
             val result = repo.signUpWithDetails(signUpData)
 
             _authState.value = result.fold(
@@ -56,7 +56,7 @@ class AuthViewModel @Inject constructor(
 
     fun loginWithGoogle(idToken: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
+            _authState.value = AuthState.Loading(LoginMethod.GOOGLE)
             val result = repo.loginWithGoogle(idToken)
 
             _authState.value = result.fold(
@@ -68,7 +68,7 @@ class AuthViewModel @Inject constructor(
 
     fun loginWithFacebook(accessToken: String) {
         viewModelScope.launch {
-            _authState.value = AuthState.Loading
+            _authState.value = AuthState.Loading(LoginMethod.FACEBOOK)
 
             val result = repo.loginWithFacebook(accessToken)
 
@@ -81,5 +81,14 @@ class AuthViewModel @Inject constructor(
 
     fun resetState() {
         _authState.value = AuthState.Idle
+    }
+
+    fun logout() {
+        repo.logout()
+        _authState.value = AuthState.Idle
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return repo.isUserLoggedIn()
     }
 }

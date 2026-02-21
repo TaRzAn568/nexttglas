@@ -3,11 +3,7 @@ package com.nexttglas.nexttglas.ui.screen
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,8 +23,7 @@ import com.nexttglas.nexttglas.ui.theme.NexttglasTheme
 @Composable
 fun IntroScreen(
     onSignUpClick: () -> Unit,
-    onLoginClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onLoginClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -47,15 +42,6 @@ fun IntroScreen(
                             )
                         )
                     },
-                    navigationIcon = {
-                        IconButton(onClick = { /* Handle menu */ }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent
                     )
@@ -67,16 +53,15 @@ fun IntroScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(horizontal = 24.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(horizontal = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // 1. Illustration Section
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
-                        .padding(vertical = 16.dp),
+                        .height(220.dp)
+                        .padding(vertical = 12.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -87,19 +72,19 @@ fun IntroScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // 2. Content Section
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     // Headline
                     Text(
-                        text = "Nexttglas – The world’s first bid-to-learn marketplace",
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            color = MaterialTheme.colorScheme.onBackground, // Inky Black
-                            fontWeight = FontWeight.SemiBold
+                        text = "Nexttglas – The world's first bid-to-learn marketplace",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
                         ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
@@ -107,18 +92,18 @@ fun IntroScreen(
 
                     // Quote with Accent Color
                     Surface(
-                        color = MaterialTheme.colorScheme.surfaceVariant, // Soft Clay
-                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "“Your Price, Your Tutor, Your Terms”",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = MaterialTheme.colorScheme.primary, // Deep Teal for emphasis
+                            text = "\"Your Price, Your Tutor, Your Terms\"",
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             ),
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(20.dp)
+                            modifier = Modifier.padding(16.dp)
                         )
                     }
 
@@ -126,8 +111,7 @@ fun IntroScreen(
                     Text(
                         text = "Post a request, watch the bids roll in, and learn with total price transparency.",
                         style = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            lineHeight = 24.sp
+                            color = MaterialTheme.colorScheme.onBackground
                         ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
@@ -135,23 +119,23 @@ fun IntroScreen(
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // 3. Action Buttons Section
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
                         onClick = onSignUpClick,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(58.dp),
+                            .weight(1f)
+                            .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary, // Amber Haze for "Bid" action feel
+                            containerColor = MaterialTheme.colorScheme.tertiary,
                             contentColor = MaterialTheme.colorScheme.onTertiary
                         ),
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
@@ -162,29 +146,11 @@ fun IntroScreen(
                         )
                     }
 
-                    Button(
-                        onClick = onRegisterClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(58.dp),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
-                    ) {
-                        Text(
-                            text = "Register",
-                            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
-                        )
-                    }
-
                     OutlinedButton(
                         onClick = onLoginClick,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(58.dp),
+                            .weight(1f)
+                            .height(56.dp),
                         shape = RoundedCornerShape(12.dp),
                         border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary),
                         colors = ButtonDefaults.outlinedButtonColors(
@@ -206,6 +172,6 @@ fun IntroScreen(
 @Composable
 fun IntroScreenPreview() {
     NexttglasTheme {
-        IntroScreen(onSignUpClick = {}, onLoginClick = {}, onRegisterClick = {})
+        IntroScreen(onSignUpClick = {}, onLoginClick = {})
     }
 }

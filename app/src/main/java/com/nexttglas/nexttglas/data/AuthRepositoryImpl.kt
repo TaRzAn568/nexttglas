@@ -1,16 +1,23 @@
 package com.nexttglas.nexttglas.data
 
+import android.content.Context
 import android.net.Uri
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.nexttglas.nexttglas.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage
@@ -129,7 +136,27 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun logout() {
+        // Sign out from Firebase
         firebaseAuth.signOut()
+
+        // Sign out from Google Sign-In
+        try {
+            val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(context.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+            googleSignInClient.signOut()
+        } catch (e: Exception) {
+            // Ignore error if Google Sign-In client fails to sign out
+        }
+
+        // Sign out from Facebook
+        try {
+            LoginManager.getInstance().logOut()
+        } catch (e: Exception) {
+            // Ignore error if Facebook fails to sign out
+        }
     }
 
     override fun isUserLoggedIn(): Boolean {

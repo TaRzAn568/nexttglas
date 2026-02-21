@@ -3,13 +3,12 @@ package com.nexttglas.nexttglas.ui.screen
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,8 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.collections.forEach
-import kotlin.let
 
 enum class UserRole(val title: String, val description: String) {
     LEARNER(
@@ -42,9 +39,11 @@ enum class UserRole(val title: String, val description: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationPreferenceScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onLogout: () -> Unit = {}
 ) {
     var selectedRole by remember { mutableStateOf<UserRole?>(null) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
     val primaryColor = MaterialTheme.colorScheme.primary
     val backgroundColor = MaterialTheme.colorScheme.background
 
@@ -63,20 +62,31 @@ fun RegistrationPreferenceScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = primaryColor
+                        )
                     }
                 },
                 actions = {
-                    TextButton(onClick = { /* No action */ }) {
-                        Text("Help")
+                    IconButton(onClick = { showLogoutDialog = true }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.error
+                        )
                     }
                 }
             )
         },
         bottomBar = {
             Surface(
-                modifier = Modifier.fillMaxWidth(),
-                tonalElevation = 8.dp
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding(),
+                tonalElevation = 8.dp,
+                color = MaterialTheme.colorScheme.background
             ) {
                 Button(
                     onClick = {
@@ -105,11 +115,10 @@ fun RegistrationPreferenceScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 24.dp)
-                .verticalScroll(rememberScrollState()),
+                .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Info Card
             Surface(
@@ -143,8 +152,47 @@ fun RegistrationPreferenceScreen(
                     )
                 }
             }
-            
-            Spacer(modifier = Modifier.height(32.dp))
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+
+        // Logout Confirmation Dialog
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = {
+                    Text(
+                        text = "Logout",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                },
+                text = {
+                    Text(
+                        text = "Are you sure you want to logout?",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showLogoutDialog = false
+                            onLogout()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Logout")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLogoutDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
         }
     }
 }
@@ -182,9 +230,8 @@ fun RoleCard(
         ) {
             Text(
                 text = role.title,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
                 ),
                 color = if (isSelected) primaryColor else MaterialTheme.colorScheme.onSurface
             )
